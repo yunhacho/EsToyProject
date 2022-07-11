@@ -1,0 +1,237 @@
+{
+    "settings": {
+      "index": {
+        "number_of_shards": 1,
+        "number_of_replicas": 0,
+        "max_ngram_diff": 30
+      },
+      "analysis": {
+        "analyzer": {
+          "nori_token_analyzer": {
+            "type": "custom",
+            "tokenizer": "nori_mixed_tokenizer"
+          },
+          "korean_analyzer": {
+            "type": "custom",
+            "tokenizer": "nori_tokenizer",
+            "filter": [
+              "nori_posfilter",
+              "nori_readingform"
+            ]
+          },
+          "english_analyzer": {
+            "tokenizer": "standard",
+            "filter": [
+              "uppercase",
+              "stop"
+            ]
+          },
+          "analyzer-topic": {
+            "type": "custom",
+            "tokenizer": "arirang_tokenizer"
+          },
+          "ngram-topic": {
+            "type": "custom",
+            "tokenizer": "partial",
+            "filter": [
+              "lowercase"
+            ]
+          },
+          "edge-front-topic": {
+            "type": "custom",
+            "tokenizer": "edgefront",
+            "filter": [
+              "lowercase"
+            ]
+          },
+          "edge-back-topic": {
+            "type": "custom",
+            "tokenizer": "edgeback",
+            "filter": [
+              "lowercase"
+            ]
+          }
+        },
+        "tokenizer": {
+          "nori_mixed_tokenizer": {
+            "type": "nori_tokenizer",
+            "decompound_mode": "mixed"
+          },
+          "partial": {
+            "type": "ngram",
+            "min_gram": 1,
+            "max_gram": 30,
+            "token_chars": [
+              "letter",
+              "digit"
+            ]
+          },
+          "edgefront": {
+            "type": "edge_ngram",
+            "min_gram": 1,
+            "max_gram": 30,
+            "token_chars": [
+              "letter",
+              "digit"
+            ]
+          },
+          "edgeback": {
+            "type": "ngram",
+            "min_gram": 1,
+            "max_gram": 30,
+            "size": "back",
+            "token_chars": [
+              "letter",
+              "digit"
+            ]
+          }
+        },
+        "normalizer": {
+          "normalizer-topic": {
+            "type": "custom",
+            "filter": [
+              "lowercase"
+            ]
+          }
+        },
+        "filter": {
+          "nori_posfilter": {
+            "type":"nori_part_of_speech",
+            "stoptags":[
+                          "E",
+                          "IC",
+                          "J",
+                          "MAG",
+                          "MM",
+                          "NA",
+                          "NR",
+                          "SC",
+                          "SE",
+                          "SF",
+                          "SH",
+                          "SL",
+                          "SN",
+                          "SP",
+                          "SSC",
+                          "SSO",
+                          "SY",
+                          "UNA",
+                          "UNKNOWN",
+                          "VA",
+                          "VCN",
+                          "VCP",
+                          "VSV",
+                          "VV",
+                          "VX",
+                          "XPN",
+                          "XR",
+                          "XSA",
+                          "XSN",
+                          "XSV"
+                      ]
+          }
+        }
+      }
+    },
+    "mappings": {
+      "properties": {
+        "ftst": {
+          "type": "text"
+        },
+        "topcid": {
+          "type": "keyword"
+        },
+        "korname": {
+          "type": "text",
+          "analyzer": "analyzer-topic",
+          "fields": {
+            "exact": {
+              "type": "keyword",
+              "normalizer": "normalizer-topic"
+            },
+            "front": {
+              "type": "text",
+              "analyzer": "edge-front-topic"
+            },
+            "back": {
+              "type": "text",
+              "analyzer": "edge-back-topic"
+            },
+            "partial": {
+              "type": "text",
+              "analyzer": "ngram-topic"
+            }
+          },
+          "search_analyzer": "english_analyzer"
+        },
+        "chosung": {
+          "type": "text",
+          "analyzer": "edge-front-topic",
+          "fields": {
+            "exact": {
+              "type": "keyword",
+              "normalizer": "normalizer-topic"
+            },
+            "back": {
+              "type": "text",
+              "analyzer": "edge-back-topic"
+            },
+            "partial": {
+              "type": "text",
+              "analyzer": "ngram-topic"
+            }
+          }
+        },
+        "jamo": {
+          "type": "text",
+          "analyzer": "edge-front-topic",
+          "fields": {
+            "exact": {
+              "type": "keyword",
+              "normalizer": "normalizer-topic"
+            },
+            "back": {
+              "type": "text",
+              "analyzer": "edge-back-topic"
+            },
+            "partial": {
+              "type": "text",
+              "analyzer": "ngram-topic"
+            }
+          }
+        },
+        "engtokor": {
+          "type": "text",
+          "analyzer": "edge-front-topic",
+          "fields": {
+            "exact": {
+              "type": "keyword",
+              "normalizer": "normalizer-topic"
+            },
+            "back": {
+              "type": "text",
+              "analyzer": "edge-back-topic"
+            },
+            "partial": {
+              "type": "text",
+              "analyzer": "ngram-topic"
+            }
+          }
+        },
+        "engname": {
+          "type": "text",
+          "analyzer": "english_analyzer"
+        },
+        "totamt": {
+          "type": "long",
+          "coerce": true
+        },
+        "excgno": {
+          "type": "keyword"
+        }
+      }
+    }
+  }
+
+
+ 
