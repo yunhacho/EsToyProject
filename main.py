@@ -181,3 +181,5 @@ if __name__ == '__main__':
     res = client.eng2kor(index, "샴성전자")
     df=PrefixSearch.typo_correct(res)
     print(df)
+
+    # cc
