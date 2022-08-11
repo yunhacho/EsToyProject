@@ -59,7 +59,7 @@ class EsClient:
 
         return term_vectors
 
-    def suggest(self, index,field,prefix):
+    def suggest(self, index, field, prefix):
         body = {
           "suggest": {
             "s1": {
@@ -168,18 +168,18 @@ if __name__ == '__main__':
     #client.bulk_insert(index, bulk_data)
 
     # 자동완성
-    res = client.suggest(index, "kor_item_completion", "삼")
-    df=PrefixSearch.auto_complete(res)
+    res = client.suggest(index, "kor_item_completion", "sk")
+    df = PrefixSearch.auto_complete(res)
     print(df)
 
     # eng2kor
     res = client.eng2kor(index, "tkatjdwjswk")
-    df=PrefixSearch.eng2kor(res)
+    df = PrefixSearch.eng2kor(res)
     print(df)
 
     # 오타교정
-    res = client.eng2kor(index, "샴성전자")
-    df=PrefixSearch.typo_correct(res)
+    res = client.eng2kor(index, "tkatjdwjswk")
+    df = PrefixSearch.typo_correct(res)
     print(df)
 
     # cc
