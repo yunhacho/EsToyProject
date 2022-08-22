@@ -1,0 +1,263 @@
+{
+  "settings": {
+    "index": {
+      "analysis": {
+        "tokenizer": {
+          "nori_mixed_tokenizer": {
+            "type": "nori_tokenizer",
+            "decompound_mode": "mixed"
+          },
+          "edge_ngram_tokenizer": {
+            "type": "edgeNGram",
+            "min_gram": "1",
+            "max_gram": "50"
+          }
+        },
+        "analyzer": {
+          "jamo_index_analyzer": {
+            "type": "custom",
+            "tokenizer": "keyword",
+            "filter": [
+              "javacafe_jamo_filter",
+              "lowercase",
+              "trim",
+              "edge_ngram_filter_front"
+            ]
+          },
+          "jamo_search_analyzer": {
+            "type": "custom",
+            "tokenizer": "keyword",
+            "filter": [
+              "javacafe_jamo_filter",
+              "lowercase",
+              "trim"
+            ]
+          },
+          "chosung_index_analyzer": {
+            "type": "custom",
+            "tokenizer": "keyword",
+            "filter": [
+              "javacafe_chosung_filter",
+              "lowercase",
+              "trim",
+              "edge_ngram_filter_front"
+            ]
+          },
+          "chosung_search_analyzer": {
+            "type": "custom",
+            "tokenizer": "keyword",
+            "filter": [
+              "javacafe_chosung_filter",
+              "lowercase",
+              "trim"
+            ]
+          },
+          "edge_ngram_analyzer": {
+            "type": "custom",
+            "tokenizer": "edge_ngram_tokenizer",
+            "filter": [
+              "lowercase",
+              "trim",
+              "edge_ngram_filter_front"
+            ]
+          },
+          "kor2eng_analyzer": {
+            "type": "custom",
+            "tokenizer": "standard",
+            "filter": [
+              "trim",
+              "lowercase",
+              "javacafe_kor2eng"
+            ]
+          },
+          "eng2kor_analyzer": {
+            "type": "custom",
+            "tokenizer": "standard",
+            "filter": [
+              "trim",
+              "lowercase",
+              "javacafe_eng2kor"
+            ]
+          },
+          "korean_spell_analyzer": {
+            "type": "custom",
+            "tokenizer": "standard",
+            "filter": [
+              "trim",
+              "lowercase",
+              "javacafe_spell"
+            ]
+          },
+          "nori_token_analyzer": {
+            "type": "custom",
+            "tokenizer": "nori_mixed_tokenizer",
+            "filter": [
+              "trim",
+              "lowercase"
+            ]
+          },
+          "korean_analyzer": {
+            "type": "custom",
+            "tokenizer": "nori_tokenizer",
+            "filter": [
+              "trim",
+              "lowercase",
+              "nori_posfilter",
+              "nori_readingform"
+            ]
+          },
+          "english_analyzer": {
+            "tokenizer": "standard",
+            "filter": [
+              "trim",
+              "lowercase",
+              "stop"
+            ]
+          },
+          "english_lowercase_analyzer": {
+            "tokenizer": "standard",
+            "filter": [
+              "trim",
+              "lowercase"
+            ]
+          },
+          "stop_filter_analyzer": {
+            "tokenizer": "standard",
+            "filter": [
+              "trim",
+              "lowercase",
+              "stop_filter"
+            ]
+          }
+        },
+        "filter": {
+          "javacafe_jamo_filter": {
+            "type": "javacafe_jamo"
+          },
+          "javacafe_chosung_filter" : {
+            "type": "javacafe_chosung"
+          },
+          "edge_ngram_filter_front": {
+            "type": "edgeNGram",
+            "min_gram": "1",
+            "max_gram": "100",
+            "side": "front"
+          },
+          "stop_filter": {
+            "type": "stop",
+            "stopwords": [
+              "corp",
+              "ltd",
+              "inc",
+              "corporation",
+              "co",
+              "class",
+              "a",
+              "company",
+              ".",
+              ","
+            ]
+          },
+          "nori_posfilter": {
+            "type": "nori_part_of_speech",
+            "stoptags": [
+              "E",
+              "IC",
+              "J",
+              "MAG",
+              "MM",
+              "NA",
+              "NR",
+              "SC",
+              "SE",
+              "SF",
+              "SH",
+              "SL",
+              "SN",
+              "SP",
+              "SSC",
+              "SSO",
+              "SY",
+              "UNA",
+              "UNKNOWN",
+              "VA",
+              "VCN",
+              "VCP",
+              "VSV",
+              "VV",
+              "VX",
+              "XPN",
+              "XR",
+              "XSA",
+              "XSN",
+              "XSV"
+            ]
+          }
+        }
+      },
+      "max_ngram_diff" : "50"
+    }
+  },
+  "mappings": {
+    "properties": {
+      "ftst_tckr_no": {
+        "type": "text"
+      },
+      "topc_id": {
+        "type": "keyword"
+      },
+      "kor_item_name": {
+        "type": "text",
+        "copy_to": ["spell_suggest",  "eng2kor_suggest", "kor_item_completion", "kor_item_chosung", "kor_item_jamo"],
+        "analyzer": "nori_token_analyzer",
+        "search_analyzer": "nori_token_analyzer"
+      },
+      "kor_item_jamo": {
+        "type": "text",
+        "analyzer": "jamo_index_analyzer",
+        "search_analyzer": "jamo_search_analyzer"
+      },
+      "kor_item_chosung": {
+        "type": "text",
+        "analyzer": "chosung_index_analyzer",
+        "search_analyzer": "chosung_search_analyzer"
+      },
+      "spell_suggest": {
+        "type": "completion",
+        "analyzer": "korean_spell_analyzer"
+      },
+      "kor2eng_suggest": {
+        "type": "text",
+        "analyzer": "edge_ngram_analyzer",
+        "search_analyzer": "kor2eng_analyzer"
+      },
+      "eng2kor_suggest": {
+        "type": "text",
+        "analyzer": "edge_ngram_analyzer",
+        "search_analyzer": "eng2kor_analyzer"
+      },
+      "kor_item_completion": {
+        "type": "completion"
+      },
+      "item_eng_dtl_name": {
+        "type": "text",
+        "copy_to": ["eng_item_completion", "kor2eng_suggest"],
+        "analyzer": "stop_filter_analyzer"
+      },
+      "eng_item_completion": {
+        "type": "completion"
+      },
+      "bzns_otln_dtl_text": {
+        "type": "text",
+        "analyzer": "korean_analyzer"
+      },
+      "oppr_tot_amt": {
+        "type": "long",
+        "coerce": true
+      },
+      "myd_excg_no": {
+        "type": "keyword"
+      }
+    }
+  }
+}
