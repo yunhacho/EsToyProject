@@ -10,7 +10,7 @@
           "edge_ngram_tokenizer": {
             "type": "edgeNGram",
             "min_gram": "1",
-            "max_gram": "50"
+            "max_gram": "100"
           }
         },
         "analyzer": {
@@ -57,7 +57,6 @@
             "tokenizer": "edge_ngram_tokenizer",
             "filter": [
               "lowercase",
-              "trim",
               "edge_ngram_filter_front"
             ]
           },
@@ -88,14 +87,6 @@
               "javacafe_spell"
             ]
           },
-          "nori_token_analyzer": {
-            "type": "custom",
-            "tokenizer": "nori_mixed_tokenizer",
-            "filter": [
-              "trim",
-              "lowercase"
-            ]
-          },
           "korean_analyzer": {
             "type": "custom",
             "tokenizer": "nori_tokenizer",
@@ -114,19 +105,20 @@
               "stop"
             ]
           },
-          "english_lowercase_analyzer": {
-            "tokenizer": "standard",
+          "eng_topic_search_analyzer": {
+            "tokenizer": "keyword",
             "filter": [
               "trim",
               "lowercase"
             ]
           },
-          "stop_filter_analyzer": {
-            "tokenizer": "standard",
+          "eng_topic_index_analyzer": {
+            "type": "custom",
+            "tokenizer": "keyword",
             "filter": [
               "trim",
               "lowercase",
-              "stop_filter"
+              "edge_ngram_filter_front"
             ]
           }
         },
@@ -208,12 +200,7 @@
       },
       "kor_item_name": {
         "type": "text",
-        "copy_to": ["spell_suggest",  "eng2kor_suggest", "kor_item_completion", "kor_item_chosung", "kor_item_jamo"],
-        "analyzer": "nori_token_analyzer",
-        "search_analyzer": "nori_token_analyzer"
-      },
-      "kor_item_jamo": {
-        "type": "text",
+        "copy_to": ["eng2kor_suggest", "kor_item_chosung"],
         "analyzer": "jamo_index_analyzer",
         "search_analyzer": "jamo_search_analyzer"
       },
@@ -222,30 +209,21 @@
         "analyzer": "chosung_index_analyzer",
         "search_analyzer": "chosung_search_analyzer"
       },
-      "spell_suggest": {
-        "type": "completion",
-        "analyzer": "korean_spell_analyzer"
-      },
-      "kor2eng_suggest": {
-        "type": "text",
-        "analyzer": "edge_ngram_analyzer",
-        "search_analyzer": "kor2eng_analyzer"
-      },
       "eng2kor_suggest": {
         "type": "text",
         "analyzer": "edge_ngram_analyzer",
         "search_analyzer": "eng2kor_analyzer"
       },
-      "kor_item_completion": {
-        "type": "completion"
-      },
       "item_eng_dtl_name": {
         "type": "text",
-        "copy_to": ["eng_item_completion", "kor2eng_suggest"],
-        "analyzer": "stop_filter_analyzer"
+        "copy_to": ["kor2eng_suggest"],
+        "analyzer": "eng_topic_index_analyzer",
+        "search_analyzer": "eng_topic_search_analyzer"
       },
-      "eng_item_completion": {
-        "type": "completion"
+      "kor2eng_suggest": {
+        "type": "text",
+        "analyzer": "edge_ngram_analyzer",
+        "search_analyzer": "kor2eng_analyzer"
       },
       "bzns_otln_dtl_text": {
         "type": "text",

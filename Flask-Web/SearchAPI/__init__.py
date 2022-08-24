@@ -1,4 +1,4 @@
 
 
 from .PrefixSearch import *
-from .EsClient import *
+from .ElasticClient import *

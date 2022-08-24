@@ -56,21 +56,6 @@ class EsClient:
 
         return term_vectors
 
-    def suggest(self, index,field,prefix):
-        body = {
-          "suggest": {
-            "s1": {
-              "prefix": prefix,
-              "completion": {
-                "field": field,
-                "size": 100
-              }
-            }
-          }
-        }
-        res = self.es.search(index=index, body=body)
-        return res['suggest']["s1"][0]["options"]
-
     def eng2kor(self, index, query):
         body={
             "query": {
@@ -80,7 +65,10 @@ class EsClient:
                     }
                 }
             },
-            "size": 100
+            "size": 100,
+            "_source": [
+                "kor_item_name", "oppr_tot_amt"
+            ]
         }
         res = self.es.search(index=index, body=body)
         return res["hits"]["hits"]
@@ -94,7 +82,10 @@ class EsClient:
                     }
                 }
             },
-            "size": 100
+            "size": 100,
+            "_source": [
+                "kor_item_name", "oppr_tot_amt"
+            ]
         }
         res = self.es.search(index=index, body=body)
         return res["hits"]["hits"]
@@ -103,7 +94,7 @@ class EsClient:
         body={
           "query": {
             "match": {
-              "kor_item_jamo": {
+              "kor_item_name": {
                 "query": keyword
               }
             }
@@ -111,7 +102,10 @@ class EsClient:
            "size": 100,
            "sort": {
              "oppr_tot_amt": "desc"
-           }
+           },
+            "_source": [
+                "kor_item_name", "oppr_tot_amt"
+            ]
         }
         res = self.es.search(index=index, body=body)
         return res["hits"]["hits"]
@@ -128,7 +122,29 @@ class EsClient:
            "size": 100,
            "sort": {
              "oppr_tot_amt": "desc"
-           }
+           },
+            "_source": [
+                "kor_item_name", "oppr_tot_amt"
+            ]
+        }
+        res = self.es.search(index=index, body=body)
+        return res["hits"]["hits"]
+
+    def multi_engkor_eng(self, index, keyword):
+        body={
+          "query":{
+            "multi_match": {
+              "query": keyword,
+              "fields": ["kor2eng_suggest", "eng2kor_suggest", "item_eng_dtl_name"]
+            }
+          },
+          "size": 100,
+           "sort": {
+             "oppr_tot_amt": "desc"
+           },
+            "_source": [
+                "kor_item_name", "oppr_tot_amt"
+            ]
         }
         res = self.es.search(index=index, body=body)
         return res["hits"]["hits"]

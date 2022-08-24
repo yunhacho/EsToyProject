@@ -39,9 +39,11 @@ search.addEventListener('keyup', function (){
     autoSearchArea.innerHTML='';
 
     var keyword = search.value
-    searchToElasticSearch(keyword)
     if(keyword == ''){
         autoSearchArea.innerHTML='';
+    }
+    else{
+        searchToElasticSearch(keyword)
     }
 })
 
@@ -60,7 +62,6 @@ function searchToElasticSearch(keyword) {
                 //let div = document.createElement('div')
                 let ul = document.createElement('ul')
                 ul.innerHTML = data[i].item
-                ul.className =
                 autoSearchArea.appendChild(ul)
             }
         }
