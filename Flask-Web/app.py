@@ -20,6 +20,7 @@ def search() :
     index = 'entire_krx_tckr'
     keyword = request.args.get('keyword')
     result = PrefixSearch(host, port, index).search(keyword)
+    print(json.dumps(result, ensure_ascii=False, indent=2))
     return json.dumps(result)
 
 

@@ -48,7 +48,7 @@ class EsClient:
             "text": text
         }
         res=self.es.indices.analyze(index=index, body=body)
-        return res['tokens']
+        return [ t['token'] for t in res['tokens'] ]
 
     def get_term_vectors(self, index, id, fields):
         term_vectors = self.es.termvectors(index=index, id=id, fields=fields, offsets=False,
@@ -163,3 +163,19 @@ class EsClient:
         }
         res = self.es.search(index=index, body=body)
         return res['suggest']["s1"][0]["options"]
+
+
+if __name__ == "__main__":
+    host='0.0.0.0'; port='9200'
+    index = 'entire_krx_tckr'
+    client = EsClient(host, port)
+
+    text = "NAVER"
+    analyzer="eng_topic_index_analyzer"
+    res = client.analyze(index, analyzer, text)
+    print(res)
+
+    text="NAVER"
+    analyzer = "eng_topic_search_analyzer"
+    res = client.analyze(index, analyzer, text)
+    print(res)

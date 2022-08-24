@@ -6,23 +6,6 @@ import json
 import pandas as pd
 from . import ElasticClient
 
-def get_data(index):
-    fname='myli001m0_20220810.csv'
-    df = pd.read_csv(fname)
-    '''
-    if 'eng' in index:
-    .
-        df = df[df['myd_excg_no']! ='KRX']
-    elif 'krx' in index:
-        df = df[df['myd_excg_no']=='KRX']
-    '''
-    #[TODO] ETF 특정 필드 없는 row 처리
-    df.dropna(inplace=True)
-    source = df.to_dict(orient='records')
-    return  source
-
-
-
 class PrefixSearch:
     # auto-completion
     def __init__(self, host, port, index):
@@ -60,7 +43,6 @@ class PrefixSearch:
         return [ element["_source"] for element in es_result]
 
     def search(self, keyword):
-
         multi_engkor_eng = self.multi_engkor_eng(keyword)
         jamo = self.jamo(keyword)
         chosung = self.chosung(keyword) if not jamo else []
@@ -79,3 +61,4 @@ if __name__ == "__main__":
 
     keyword = '삼성전자'
     search_result = api.search(keyword)
+    print(json.dumps(search_result, indent=2))
