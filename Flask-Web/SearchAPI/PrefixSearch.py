@@ -4,7 +4,7 @@
 # Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
 import json
 import pandas as pd
-from SearchAPI.EsClient import EsClient
+from EsClient import EsClient
 
 def get_data(index):
     fname='myli001m0_20220810.csv'
