@@ -222,7 +222,7 @@
       },
       "kor2eng_suggest": {
         "type": "text",
-        "analyzer": "edge_ngram_analyzer",
+        "analyzer": "eng_topic_index_analyzer",
         "search_analyzer": "kor2eng_analyzer"
       },
       "bzns_otln_dtl_text": {
