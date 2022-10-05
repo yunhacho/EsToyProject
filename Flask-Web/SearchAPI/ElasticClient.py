@@ -149,6 +149,99 @@ class EsClient:
         res = self.es.search(index=index, body=body)
         return res["hits"]["hits"]
 
+    def keyword(self, index, keyword):
+        body={
+          "query": {
+            "term": {
+              "item_keyword": keyword
+            }
+          },
+          "size": 100,
+          "sort": {
+            "oppr_tot_amt": "desc"
+          },
+          "_source": [
+              "kor_item_name", "oppr_tot_amt"
+          ]
+        }
+        res = self.es.search(index=index, body=body)
+        return res["hits"]["hits"]
+
+    def brand(self, index, keyword):
+        body={
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "nested": {
+                    "path": "item_brand",
+                    "query": {
+                      "bool": {
+                        "must": [
+                          {
+                            "term": {
+                              "item_brand.brand": {
+                                "value": keyword
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "size": 100,
+          "sort": {
+            "oppr_tot_amt": "desc"
+          },
+          "_source": [
+              "kor_item_name", "oppr_tot_amt"
+          ]
+        }
+        res = self.es.search(index=index, body=body)
+        return res["hits"]["hits"]
+
+
+    def category(self, index, keyword):
+        body={
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "nested": {
+                    "path": "item_category",
+                    "query": {
+                      "bool": {
+                        "must": [
+                          {
+                            "term": {
+                              "item_category.category": {
+                                "value": keyword
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "size": 100,
+          "sort": {
+            "oppr_tot_amt": "desc"
+          },
+            "_source": [
+              "kor_item_name", "oppr_tot_amt"
+          ]
+        }
+        res = self.es.search(index=index, body=body)
+        return res["hits"]["hits"]
+
     #[TODO] 추후 수정 필요
     def typo_correct(self, index, text):
         body={
@@ -170,12 +263,17 @@ if __name__ == "__main__":
     index = 'entire_krx_tckr'
     client = EsClient(host, port)
 
-    text = "NAVER"
+    text = "삼성전"
     analyzer="eng_topic_index_analyzer"
     res = client.analyze(index, analyzer, text)
     print(res)
 
-    text="NAVER"
-    analyzer = "eng_topic_search_analyzer"
+    text="삼성전"
+    analyzer = "eng2kor_analyzer"
+    res = client.analyze(index, analyzer, text)
+    print(res)
+
+    text="삼성전"
+    analyzer = "kor2eng_analyzer"
     res = client.analyze(index, analyzer, text)
     print(res)

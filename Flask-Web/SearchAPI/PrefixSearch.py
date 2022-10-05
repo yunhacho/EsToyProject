@@ -32,6 +32,18 @@ class PrefixSearch:
         es_multi = self.es.multi_engkor_eng(self.index, keyword)
         return self._get_data(es_multi)
 
+    def keyword(self, keyword):
+        es_keyword = self.es.keyword(self.index, keyword)
+        return self._get_data(es_keyword)
+
+    def brand(self, keyword):
+        es_brand = self.es.brand(self.index, keyword)
+        return self._get_data(es_brand)
+
+    def category(self, keyword):
+        es_category = self.es.category(self.index, keyword)
+        return self._get_data(es_category)
+
     #[TODO] 추후수정
     def typo_correct(self, keyword):
         es_typocorrect = self.es.typo_correct(self.index, keyword)
@@ -43,14 +55,28 @@ class PrefixSearch:
         return [ element["_source"] for element in es_result]
 
     def search(self, keyword):
+        # prefix
         multi_engkor_eng = self.multi_engkor_eng(keyword)
         jamo = self.jamo(keyword)
         chosung = self.chosung(keyword) if not jamo else []
-
         result = multi_engkor_eng + jamo + chosung
         result = list(set([tuple(t) for t in [(x['kor_item_name'], x['oppr_tot_amt']) for x in result]]))
         result = [{'item': x[0], 'oppr_tot_amt': x[1]} for x in result]
         return sorted(result, key=lambda x: (-x['oppr_tot_amt']))
+
+        # keyword search
+        item_keyword = self.keyword(keyword)
+        if item_keyword:
+            result = list(set([tuple(t) for t in [(x['kor_item_name'], x['oppr_tot_amt']) for x in item_keyword]]))
+            result = [{'item': x[0], 'oppr_tot_amt': x[1]} for x in result]
+            return sorted(result, key=lambda x: (-x['oppr_tot_amt']))
+
+        brand = self.brand(keyword)
+        category = self.category(keyword)
+        if brand or category:
+            result = list(set([tuple(t) for t in [(x['kor_item_name'], x['oppr_tot_amt']) for x in brand + category]]))
+            result = [{'item': x[0], 'oppr_tot_amt': x[1]} for x in result]
+            return sorted(result, key=lambda x: (-x['oppr_tot_amt']))
 
 
 if __name__ == "__main__":
