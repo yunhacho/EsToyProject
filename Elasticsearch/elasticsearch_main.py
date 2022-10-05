@@ -148,11 +148,13 @@ class EsClient:
 if __name__ == '__main__':
 
     host='0.0.0.0'; port='9200'
-    index = 'entire_krx_tckr'
+    #index = 'entire_krx_tckr'
+    index = 'tckr_keyword'
     client = EsClient(host, port)
 
     #create index
-    path = ''; fname = 'setting.json'
+    #path = ''; fname = 'setting.json'
+    path = ''; fname = 'add_setting.json'
     with open(path+fname, 'r', encoding='utf-8') as f:
         setting = json.load(f)
 
@@ -160,10 +162,27 @@ if __name__ == '__main__':
     client.create_index(index, setting)
 
     #insert data
-    fname='myli001m0_ver20220810.csv'
+    #fname='myli001m0_ver20220810.csv'
+    fname='myli001_added2_ver20220926.csv'
     df = pd.read_csv(fname)
+
+    for col in ('item_keyword', 'item_category', 'item_brand', 'customer', 'supplier', 'competitor'):
+        df[col] = df[col].apply(lambda x: eval(x))
 
     #[TODO] 추후 db 연결
     df.dropna(inplace=True)
-    bulk_data = df.to_dict(orient='records')
+    #bulk_data = df.to_dict(orient='records')
+    data = df.to_dict(orient='records')
+    bulk_data = []
+    for e in data:
+        e['item_relation']={
+            'customer': e['customer'],
+            'supplier': e['supplier'],
+            'competitor': e['competitor']
+        }
+        e.pop('customer', None)
+        e.pop('supplier', None)
+        e.pop('competitor', None)
+        bulk_data.append(e)
+
     client.bulk_insert(index, bulk_data)
