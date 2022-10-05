@@ -14,7 +14,8 @@ def index():
 @app.route('/search', methods=['GET'])
 def search() :
     host = '0.0.0.0'; port = '9200'
-    index = 'entire_krx_tckr'
+    #index = 'entire_krx_tckr'
+    index = 'tckr_keyword'
     keyword = request.args.get('keyword')
     result = PrefixSearch(host, port, index).search(keyword)
     return json.dumps(result)
