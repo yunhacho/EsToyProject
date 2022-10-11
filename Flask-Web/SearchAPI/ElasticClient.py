@@ -65,10 +65,7 @@ class EsClient:
                     }
                 }
             },
-            "size": 100,
-            "_source": [
-                "kor_item_name", "oppr_tot_amt"
-            ]
+            "size": 100
         }
         res = self.es.search(index=index, body=body)
         return res["hits"]["hits"]
@@ -82,10 +79,7 @@ class EsClient:
                     }
                 }
             },
-            "size": 100,
-            "_source": [
-                "kor_item_name", "oppr_tot_amt"
-            ]
+            "size": 100
         }
         res = self.es.search(index=index, body=body)
         return res["hits"]["hits"]
@@ -102,10 +96,7 @@ class EsClient:
            "size": 100,
            "sort": {
              "oppr_tot_amt": "desc"
-           },
-            "_source": [
-                "kor_item_name", "oppr_tot_amt"
-            ]
+           }
         }
         res = self.es.search(index=index, body=body)
         return res["hits"]["hits"]
@@ -122,10 +113,7 @@ class EsClient:
            "size": 100,
            "sort": {
              "oppr_tot_amt": "desc"
-           },
-            "_source": [
-                "kor_item_name", "oppr_tot_amt"
-            ]
+           }
         }
         res = self.es.search(index=index, body=body)
         return res["hits"]["hits"]
@@ -141,10 +129,7 @@ class EsClient:
           "size": 100,
            "sort": {
              "oppr_tot_amt": "desc"
-           },
-            "_source": [
-                "kor_item_name", "oppr_tot_amt"
-            ]
+           }
         }
         res = self.es.search(index=index, body=body)
         return res["hits"]["hits"]
@@ -159,10 +144,7 @@ class EsClient:
           "size": 100,
           "sort": {
             "oppr_tot_amt": "desc"
-          },
-          "_source": [
-              "kor_item_name", "oppr_tot_amt"
-          ]
+          }
         }
         res = self.es.search(index=index, body=body)
         return res["hits"]["hits"]
@@ -196,10 +178,7 @@ class EsClient:
           "size": 100,
           "sort": {
             "oppr_tot_amt": "desc"
-          },
-          "_source": [
-              "kor_item_name", "oppr_tot_amt"
-          ]
+          }
         }
         res = self.es.search(index=index, body=body)
         return res["hits"]["hits"]
@@ -234,10 +213,7 @@ class EsClient:
           "size": 100,
           "sort": {
             "oppr_tot_amt": "desc"
-          },
-            "_source": [
-              "kor_item_name", "oppr_tot_amt"
-          ]
+          }
         }
         res = self.es.search(index=index, body=body)
         return res["hits"]["hits"]

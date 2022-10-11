@@ -149,40 +149,39 @@ if __name__ == '__main__':
 
     host='0.0.0.0'; port='9200'
     #index = 'entire_krx_tckr'
-    index = 'tckr_keyword'
+    index = [ 'general_topic', 'etf_topic']
     client = EsClient(host, port)
 
     #create index
-    #path = ''; fname = 'setting.json'
-    path = ''; fname = 'add_setting.json'
-    with open(path+fname, 'r', encoding='utf-8') as f:
-        setting = json.load(f)
+    for idx in index:
 
-    client.delete_index(index)
-    client.create_index(index, setting)
+        path = ''; fname = 'add_setting.json'
+        with open(path+fname, 'r', encoding='utf-8') as f:
+            setting = json.load(f)
 
-    #insert data
-    #fname='myli001m0_ver20220810.csv'
-    fname='myli001_added2_ver20220926.csv'
-    df = pd.read_csv(fname)
+        client.delete_index(idx)
+        client.create_index(idx, setting)
 
-    for col in ('item_keyword', 'item_category', 'item_brand', 'customer', 'supplier', 'competitor'):
-        df[col] = df[col].apply(lambda x: eval(x))
+        #insert data
+        fname=f'myli001m0_{idx}_ver20220926.csv'
+        df = pd.read_csv(fname)
 
-    #[TODO] 추후 db 연결
-    df.dropna(inplace=True)
-    #bulk_data = df.to_dict(orient='records')
-    data = df.to_dict(orient='records')
-    bulk_data = []
-    for e in data:
-        e['item_relation']={
-            'customer': e['customer'],
-            'supplier': e['supplier'],
-            'competitor': e['competitor']
-        }
-        e.pop('customer', None)
-        e.pop('supplier', None)
-        e.pop('competitor', None)
-        bulk_data.append(e)
+        for col in ('item_keyword', 'item_category', 'item_brand', 'customer', 'supplier', 'competitor'):
+            df[col] = df[col].apply(lambda x: eval(x))
 
-    client.bulk_insert(index, bulk_data)
+        #[TODO] 추후 db 연결
+        df.dropna(inplace=True)
+        data = df.to_dict(orient='records')
+        bulk_data = []
+        for e in data:
+            e['item_relation']={
+                'customer': e['customer'],
+                'supplier': e['supplier'],
+                'competitor': e['competitor']
+            }
+            e.pop('customer', None)
+            e.pop('supplier', None)
+            e.pop('competitor', None)
+            bulk_data.append(e)
+
+        client.bulk_insert(idx, bulk_data)

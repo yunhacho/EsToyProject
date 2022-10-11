@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8"/>
         <script src="https://kit.fontawesome.com/7ab9e78da3.js" crossorigin="anonymous"></script>
+          <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -19,18 +20,33 @@
         <script src="https://www.amcharts.com/lib/4/charts.js"></script>
         <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
         <div class="all"> <!--출력하고 싶은 부분의 전체 레이아웃-->
-            <img src="../static/image/moida.png">
+            <img src="../static/image/moida.png" width=150px height=150px>
             <p>일상 속 투자 시작해 볼까요? </p>
             <div class="icon">
                 <!--<input type="text" id="search" style="text-align: center" onkeyup="filter()" placeholder="종목을 검색해보세요">-->
                 <input type="text" id="search" style="text-align: center" placeholder="종목을 검색해보세요"><!--검색창-->
-                <!-- <i class="fas fa-search search"></i> -->
-                <div id="autoSearchArea" class="selectArea" style="text-align: center; position: absolute; top: 100%; left: 0; right: 0; z-index:100; background: #FFFFFF; overflow: hidden;"> </div>
-                <!-- <button type="submit" id= "submitBtn" class="button">Enter</button> -->
+                <button id="search_btn" class="fas fa-search search"></button>
+                <div id="autoSearchArea" class="selectArea" style="position: absolute; top: 100%; left: 0; right: 0; z-index:100; background: #FFFFFF; overflow: hidden;">
+                </div>
                 <!--<ul class="suggestion"> </ul> -->
                 <!--<i class="fas fa-keyboard keyboard"></i>
-                <i class="fas fa-microphone mic"></i>
-                <button class="button">종목 검색</button> -->
+                <i class="fas fa-microphone mic"></i> -->
+                <!--
+                <div id = "tickerContainer" class = "container-lg" hidden >
+                  <p style="text-align: left"> </p>
+                  <table width = "100%" class="table table-bordered table-hover table-striped">
+                   <caption>Crawling Status</caption>
+                    <thead class="thead-light">
+                      <tr>
+                        <th style="width: 10%" scope="col" class = "text-center align-middle">종목</th>
+                        <th style="width: 35%" scope="col" class = "text-center align-middle">종목상세개요</th>
+                        <th style="width: 10%" scope="col" class = "text-center align-middle">시가총액</th>
+                      </tr>
+                    </thead>
+                    <tbody id = "tickerList">
+                    </tbody>
+                  </table>
+            </div>-->
             </div>
         </div>
     <script type = 'text/javascript' src = "{{url_for('static', filename='js/event.js')}}"></script>
