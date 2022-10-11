@@ -26,8 +26,6 @@
                 <!--<input type="text" id="search" style="text-align: center" onkeyup="filter()" placeholder="종목을 검색해보세요">-->
                 <input type="text" id="search" style="text-align: center" placeholder="종목을 검색해보세요"><!--검색창-->
                 <button id="search_btn" class="fas fa-search search"></button>
-                <div id="autoSearchArea" class="selectArea" style="position: absolute; top: 100%; left: 0; right: 0; z-index:100; background: #FFFFFF; overflow: hidden;">
-                </div>
                 <!--<ul class="suggestion"> </ul> -->
                 <!--<i class="fas fa-keyboard keyboard"></i>
                 <i class="fas fa-microphone mic"></i> -->
@@ -47,7 +45,76 @@
                     </tbody>
                   </table>
             </div>-->
+                <p></p>
+                <div id="autoSearchArea" class="selectArea" style="position: absolute; top: 100%; left: 0; right: 0; z-index:100; background: #FFFFFF; overflow: hidden;">
+                    <p></p>
+                    <table width = "100%" class="table table-bordered table-hover table-striped">
+                    <thead class="thead-light">
+                      <tr>
+                        <th colspan="2" scope="col" class = "text-center align-middle">종목</th>
+                      </tr>
+                    </thead>
+                    <tbody id = "generalTopic">
+                    </tbody>
+                  </table>
+
+                    <table width = "100%" class="table table-bordered table-hover table-striped">
+                    <thead class="thead-light">
+                      <tr>
+                        <th colspan="2" scope="col" class = "text-center align-middle">키워드</th>
+                      </tr>
+                      <tr>
+                          <td> 종목 </td>
+                          <td> 키워드 </td>
+                      </tr>
+                    </thead>
+                    <tbody id = "keyword">
+
+                    </tbody>
+                  </table>
+
+                    <table width = "100%" class="table table-bordered table-hover table-striped">
+                    <thead class="thead-light">
+                      <tr>
+                        <th colspan="2" scope="col" class = "text-center align-middle">브랜드</th>
+                      </tr>
+                      <tr>
+                          <td> 종목 </td>
+                          <td> 브랜드 </td>
+                      </tr>
+                    </thead>
+                    <tbody id = "brand">
+
+                    </tbody>
+                  </table>
+
+                    <table width = "100%" class="table table-bordered table-hover table-striped">
+                    <thead class="thead-light">
+                      <tr>
+                        <th colspan="2" scope="col" class = "text-center align-middle">카테고리</th>
+                      </tr>
+                      <tr>
+                          <td> 종목 </td>
+                          <td> 카테고리 </td>
+                      </tr>
+                    </thead>
+                    <tbody id = "category">
+                    </tbody>
+                  </table>
+
+
+                    <table width = "100%" class="table table-bordered table-hover table-striped">
+                    <thead class="thead-light">
+                      <tr>
+                        <th colspan="2" scope="col" class = "text-center align-middle">ETF</th>
+                      </tr>
+                    </thead>
+                    <tbody id = "ETFTopic">
+                    </tbody>
+                  </table>
+                </div>
             </div>
+
         </div>
     <script type = 'text/javascript' src = "{{url_for('static', filename='js/event.js')}}"></script>
     </body>

@@ -4,7 +4,7 @@ from flask import request
 import json
 
 from SearchAPI.PrefixSearch import PrefixSearch
-
+from SearchAPI.KeywordSearch import KeywordSearch
 app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
@@ -17,18 +17,18 @@ def search() :
     index = 'general_topic'
     keyword = request.args.get('keyword')
     result = PrefixSearch(host, port, index).search(keyword)
-    return json.dumps(result)
+    return json.dumps(result[:5])
 
 @app.route('/brandsearch', methods=['GET'])
 def brandSearch() :
     host = '0.0.0.0'; port = '9200'
     keyword = request.args.get('keyword')
 
+    result = []
     index = 'general_topic'
-    result = PrefixSearch(host, port, index).brand(keyword)
+    result = KeywordSearch(host, port, index).brand(keyword)
     index = 'etf_topic'
-    result += PrefixSearch(host, port, index).brand(keyword)
-
+    result.extend(KeywordSearch(host, port, index).brand(keyword))
     return json.dumps(returnSort(result))
 
 @app.route('/categorysearch', methods=['GET'])
@@ -37,11 +37,11 @@ def categorySearch() :
     port = '9200'
     keyword = request.args.get('keyword')
 
+    result = []
     index = 'general_topic'
-    result = PrefixSearch(host, port, index).category(keyword)
+    result = KeywordSearch(host, port, index).category(keyword)
     index = 'etf_topic'
-    result += PrefixSearch(host, port, index).category(keyword)
-
+    result.extend(KeywordSearch(host, port, index).category(keyword))
     return json.dumps(returnSort(result))
 
 @app.route('/keywordsearch', methods=['GET'])
@@ -50,11 +50,11 @@ def keywordSearch() :
     port = '9200'
     keyword = request.args.get('keyword')
 
+    result=[]
     index = 'general_topic'
-    result = PrefixSearch(host, port, index).keyword(keyword)
+    result = KeywordSearch(host, port, index).keyword(keyword)
     index = 'etf_topic'
-    result += PrefixSearch(host, port, index).keyword(keyword)
-
+    result.extend(KeywordSearch(host, port, index).keyword(keyword))
     return json.dumps(returnSort(result))
 
 @app.route('/etfsearch', methods=['GET'])
@@ -64,12 +64,15 @@ def etfSearch() :
 
     keyword = request.args.get('keyword')
     result = PrefixSearch(host, port, index).search(keyword)
-    return json.dumps(result)
+    return json.dumps(result[:5])
 
-def returnSort(self, source):
-    result = list(set([tuple(t) for t in [(x['kor_item_name'], x['oppr_tot_amt']) for x in source]]))
-    result = [{'item': x[0], 'oppr_tot_amt': x[1]} for x in result]
-    return sorted(result, key=lambda x: (-x['oppr_tot_amt']))
+def returnSort(source):
+    if source:
+        result = list(set([tuple(t) for t in [(x['item'], x['oppr_tot_amt']) for x in source]]))
+        result = [{'item': x[0], 'oppr_tot_amt': x[1]} for x in result]
+        return sorted(result, key=lambda x: (-x['oppr_tot_amt']))[:5]
+    else:
+        return []
 
 if __name__ == '__main__':
     app.run()

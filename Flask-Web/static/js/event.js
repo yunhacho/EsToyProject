@@ -22,15 +22,24 @@ search.addEventListener('keyup', function (){
         submitBtn.click();
     }
 
-    var autoSearchArea = document.getElementById('autoSearchArea')
-    autoSearchArea.innerHTML='';
+    var tickerList = document.getElementById('generalTopic')
+    tickerList.innerHTML = ''
+    var tickerList = document.getElementById('keyword')
+    tickerList.innerHTML = ''
+    var tickerList = document.getElementById('brand')
+    tickerList.innerHTML = ''
+    var tickerList = document.getElementById('category')
+    tickerList.innerHTML = ''
+    var tickerList = document.getElementById('ETFTopic')
+    tickerList.innerHTML = ''
 
     var keyword = search.value
-    if(keyword == ''){
-        autoSearchArea.innerHTML='';
-    }
-    else{
+    if(keyword != ''){
         GeneralTopicSearch(keyword)
+        KeywordSearch(keyword)
+        BrandSearch(keyword)
+        CategorySearch(keyword)
+        ETFTopicSearch(keyword)
     }
 })
 
@@ -44,17 +53,11 @@ function GeneralTopicSearch(keyword) {
             alert("통신실패");
         },
         success: function (data) {
-            console.log(data)
-            var autoSearchArea = document.getElementById('autoSearchArea')
-            let table = document.createElement('table')
-            table.innerHTML = '<tr bgcolor="blue" align ="left"> <p><td colspan = "2" span style="color:black">일반 종목</td></p></tr>'
+            var tickerList = document.getElementById('generalTopic')
+            tickerList.innerHTML=''
             for(i=0; i<data.length; i++){
-                //let div = document.createElement('div')
-                //let ul = document.createElement('ul')
-                //ul.innerHTML = data[i].item
-                table.innerHTML += '<tr><p><td colspan="2">' + data[i].item + '</td></p></tr>'
+                tickerList.innerHTML += '<tr><td colspan="2">' + data[i].item + '</td></tr>'
             }
-            autoSearchArea.appendChild(table)
         }
     })
 }
@@ -69,16 +72,10 @@ function KeywordSearch(keyword) {
             alert("통신실패");
         },
         success: function (data) {
-            console.log(data)
-            var autoSearchArea = document.getElementById('autoSearchArea')
-            let table = document.createElement('table')
-            table.innerHTML = '<tr bgcolor="blue" align ="left"> <p><td colspan = "2" span style="color:white">일반 종목</td></p></tr>'
+            var tickerList = document.getElementById('keyword')
+            tickerList.innerHTML=''
             for(i=0; i<data.length; i++){
-                //let div = document.createElement('div')
-                //let ul = document.createElement('ul')
-                //ul.innerHTML = data[i].item
-                table.innerHTML += '<tr><p><td colspan="2"' + data[i].item + '</td></p></tr>'
-                autoSearchArea.appendChild(table)
+                tickerList.innerHTML += '<tr><td>' + data[i].item + '</td> <td>'+ keyword+ '</td></tr>'
             }
         }
     })
@@ -95,13 +92,10 @@ function BrandSearch(keyword) {
             alert("통신실패");
         },
         success: function (data) {
-            console.log(data)
-            var autoSearchArea = document.getElementById('autoSearchArea')
+            var tickerList = document.getElementById('brand')
+            tickerList.innerHTML=''
             for(i=0; i<data.length; i++){
-                //let div = document.createElement('div')
-                let ul = document.createElement('ul')
-                ul.innerHTML = data[i].item
-                autoSearchArea.appendChild(ul)
+                tickerList.innerHTML += '<tr><td>' + data[i].item + '</td> <td>'+ keyword+ '</td></tr>'
             }
         }
     })
@@ -117,13 +111,10 @@ function CategorySearch(keyword) {
             alert("통신실패");
         },
         success: function (data) {
-            console.log(data)
-            var autoSearchArea = document.getElementById('autoSearchArea')
+            var tickerList = document.getElementById('category')
+            tickerList.innerHTML=''
             for(i=0; i<data.length; i++){
-                //let div = document.createElement('div')
-                let ul = document.createElement('ul')
-                ul.innerHTML = data[i].item
-                autoSearchArea.appendChild(ul)
+                tickerList.innerHTML += '<tr><td>' + data[i].item + '</td> <td>'+ keyword+ '</td></tr>'
             }
         }
     })
@@ -138,35 +129,11 @@ function ETFTopicSearch(keyword) {
             alert("통신실패");
         },
         success: function (data) {
-            console.log(data)
-            var autoSearchArea = document.getElementById('autoSearchArea')
+            var tickerList = document.getElementById('ETFTopic')
+            tickerList.innerHTML=''
             for(i=0; i<data.length; i++){
-                //let div = document.createElement('div')
-                let ul = document.createElement('ul')
-                ul.innerHTML = data[i].item
-                autoSearchArea.appendChild(ul)
+                tickerList.innerHTML += '<tr><td colspan="2">' + data[i].item + '</td></tr>'
             }
         }
     })
 }
-/*
-function searchToElasticSearch_keywordapi(keyword) {
-    $.ajax({
-        type: 'GET',
-        url: "/search?keyword=" + keyword,
-        dataType: "json",
-        error: function () {
-            //alert("통신실패!!!!");
-        },
-        success: function (data) {
-            console.log(data)
-            var tickerList = document.getElementById("tickerList")
-            for(i=0; i<data.length; i++){
-                var row = "<tr> <td>" + data["item"] + "</td> <td>" + data['bzns_dtl_text'] + "</td> <td>" + data['oppr_tot_amt'] + "</td> </tr>"
-                console.log(row)
-                tickerList.innerHTML += row
-            }
-        }
-    })
-}
-*/
