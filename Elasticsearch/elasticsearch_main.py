@@ -155,7 +155,7 @@ if __name__ == '__main__':
     #create index
     for idx in index:
 
-        path = ''; fname = 'add_setting.json'
+        path = ''; fname = f'{idx}_setting.json'
         with open(path+fname, 'r', encoding='utf-8') as f:
             setting = json.load(f)
 
