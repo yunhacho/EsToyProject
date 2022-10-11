@@ -34,7 +34,19 @@ search.addEventListener('keyup', function (){
     tickerList.innerHTML = ''
 
     var keyword = search.value
-    if(keyword != ''){
+    if (keyword == ''){
+        var tickerList = document.getElementById('generlTopicTB')
+        tickerList.hidden = true
+        var tickerList = document.getElementById('keywordTB')
+        tickerList.hidden = true
+        var tickerList = document.getElementById('brandTB')
+        tickerList.hidden = true
+        var tickerList = document.getElementById('categoryTB')
+        tickerList.hidden = true
+        var tickerList = document.getElementById('ETFTB')
+        tickerList.hidden = true
+    }
+    else{
         GeneralTopicSearch(keyword)
         KeywordSearch(keyword)
         BrandSearch(keyword)
@@ -53,6 +65,8 @@ function GeneralTopicSearch(keyword) {
             alert("통신실패");
         },
         success: function (data) {
+            var tb = document.getElementById('generlTopicTB')
+            tb.hidden = false
             var tickerList = document.getElementById('generalTopic')
             tickerList.innerHTML=''
             for(i=0; i<data.length; i++){
@@ -72,6 +86,8 @@ function KeywordSearch(keyword) {
             alert("통신실패");
         },
         success: function (data) {
+            var tb = document.getElementById('keywordTB')
+            tb.hidden = false
             var tickerList = document.getElementById('keyword')
             tickerList.innerHTML=''
             for(i=0; i<data.length; i++){
@@ -92,6 +108,8 @@ function BrandSearch(keyword) {
             alert("통신실패");
         },
         success: function (data) {
+            var tb = document.getElementById('brandTB')
+            tb.hidden = false
             var tickerList = document.getElementById('brand')
             tickerList.innerHTML=''
             for(i=0; i<data.length; i++){
@@ -111,6 +129,8 @@ function CategorySearch(keyword) {
             alert("통신실패");
         },
         success: function (data) {
+            var tb = document.getElementById('categoryTB')
+            tb.hidden = false
             var tickerList = document.getElementById('category')
             tickerList.innerHTML=''
             for(i=0; i<data.length; i++){
@@ -129,6 +149,8 @@ function ETFTopicSearch(keyword) {
             alert("통신실패");
         },
         success: function (data) {
+            var tb = document.getElementById('ETFTB')
+            tb.hidden = false
             var tickerList = document.getElementById('ETFTopic')
             tickerList.innerHTML=''
             for(i=0; i<data.length; i++){
