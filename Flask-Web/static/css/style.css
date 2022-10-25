@@ -34,16 +34,6 @@ input{
     right: 20px;
     color: #4F86EC;
 }
-.button {
-    padding: 13px;
-    margin: 15px 3px 10px 3px;
-    top: 12px;            /*위에서 12px 왼쪽에서20px*/
-    right: 30px;
-    background: none;
-    border: none;
-    color: #F4F4F4;
-    font-weight: 500;
-}
 a {
     color: #4d4fcf;
 }

@@ -43,10 +43,10 @@ class PrefixSearch:
         return [ element["_source"] for element in es_result]
 
     def search(self, keyword):
+        # prefix
         multi_engkor_eng = self.multi_engkor_eng(keyword)
         jamo = self.jamo(keyword)
         chosung = self.chosung(keyword) if not jamo else []
-
         result = multi_engkor_eng + jamo + chosung
         result = list(set([tuple(t) for t in [(x['kor_item_name'], x['oppr_tot_amt']) for x in result]]))
         result = [{'item': x[0], 'oppr_tot_amt': x[1]} for x in result]
